@@ -20,4 +20,6 @@ export TARGETS="
 	-p ethcore-ipc-nano \
 	-p ethcore-light \
 	-p node-health \
+	-p wasm \
+	-p evm \
 	-p parity"

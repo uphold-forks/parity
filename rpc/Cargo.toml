@@ -33,26 +33,26 @@ jsonrpc-ipc-server = { git = "https://github.com/paritytech/jsonrpc.git", branch
 jsonrpc-macros = { git = "https://github.com/paritytech/jsonrpc.git", branch = "parity-1.7" }
 jsonrpc-pubsub = { git = "https://github.com/paritytech/jsonrpc.git", branch = "parity-1.7" }
 
+ethash = { path = "../ethash" }
+ethcore = { path = "../ethcore" }
+ethcore-devtools = { path = "../devtools" }
 ethcore-io = { path = "../util/io" }
 ethcore-ipc = { path = "../ipc/rpc" }
-ethcore-util = { path = "../util" }
-ethcore = { path = "../ethcore" }
-ethcrypto = { path = "../ethcrypto" }
-ethkey = { path = "../ethkey" }
-ethstore = { path = "../ethstore" }
-ethash = { path = "../ethash" }
-ethsync = { path = "../sync" }
-ethjson = { path = "../json" }
-ethcore-devtools = { path = "../devtools" }
 ethcore-light = { path = "../ethcore/light" }
 ethcore-logger = { path = "../logger" }
-evm = { path = "../ethcore/evm" }
+ethcore-util = { path = "../util" }
+ethcrypto = { path = "../ethcrypto" }
+ethjson = { path = "../json" }
+ethkey = { path = "../ethkey" }
+ethstore = { path = "../ethstore" }
+ethsync = { path = "../sync" }
 fetch = { path = "../util/fetch" }
 node-health = { path = "../dapps/node-health" }
 parity-reactor = { path = "../util/reactor" }
 parity-updater = { path = "../updater" }
 rlp = { path = "../util/rlp" }
 stats = { path = "../util/stats" }
+vm = { path = "../ethcore/vm" }
 
 clippy = { version = "0.0.103", optional = true}
 pretty_assertions = "0.1"

@@ -121,12 +121,12 @@ pub struct RunCmd {
 	pub whisper: ::whisper::Config
 }
 
-pub fn open_ui(ws_conf: &rpc::WsConfiguration, ui_conf: &rpc::UiConfiguration) -> Result<(), String> {
+pub fn open_ui(ws_conf: &rpc::WsConfiguration, ui_conf: &rpc::UiConfiguration, logger_config: &LogConfig) -> Result<(), String> {
 	if !ui_conf.enabled {
 		return Err("Cannot use UI command with UI turned off.".into())
 	}
 
-	let token = signer::generate_token_and_url(ws_conf, ui_conf)?;
+	let token = signer::generate_token_and_url(ws_conf, ui_conf, logger_config)?;
 	// Open a browser
 	url::open(&token.url);
 	// Print a message
@@ -285,7 +285,7 @@ fn execute_light(cmd: RunCmd, can_restart: bool, logger: Arc<RotatingLogger>) ->
 	let rpc_stats = Arc::new(informant::RpcStats::default());
 
 	// the dapps server
-	let signer_service = Arc::new(signer::new_service(&cmd.ws_conf, &cmd.ui_conf));
+	let signer_service = Arc::new(signer::new_service(&cmd.ws_conf, &cmd.ui_conf, &cmd.logger_config));
 	let (node_health, dapps_deps) = {
 		let contract_client = Arc::new(::dapps::LightRegistrar {
 			client: service.client().clone(),
@@ -394,7 +394,7 @@ pub fn execute(cmd: RunCmd, can_restart: bool, logger: Arc<RotatingLogger>) -> R
 		// Check if Parity is already running
 		let addr = format!("{}:{}", cmd.ui_conf.interface, cmd.ui_conf.port);
 		if !TcpListener::bind(&addr as &str).is_ok() {
-			return open_ui(&cmd.ws_conf, &cmd.ui_conf).map(|_| (false, None));
+			return open_ui(&cmd.ws_conf, &cmd.ui_conf, &cmd.logger_config).map(|_| (false, None));
 		}
 	}
 
@@ -674,7 +674,7 @@ pub fn execute(cmd: RunCmd, can_restart: bool, logger: Arc<RotatingLogger>) -> R
 		false => Some(account_provider.clone())
 	};
 
-	let signer_service = Arc::new(signer::new_service(&cmd.ws_conf, &cmd.ui_conf));
+	let signer_service = Arc::new(signer::new_service(&cmd.ws_conf, &cmd.ui_conf, &cmd.logger_config));
 
 	// the dapps server
 	let (node_health, dapps_deps) = {
@@ -819,7 +819,7 @@ pub fn execute(cmd: RunCmd, can_restart: bool, logger: Arc<RotatingLogger>) -> R
 
 	// start ui
 	if cmd.ui {
-		open_ui(&cmd.ws_conf, &cmd.ui_conf)?;
+		open_ui(&cmd.ws_conf, &cmd.ui_conf, &cmd.logger_config)?;
 	}
 
 	if let Some(dapp) = cmd.dapp {
