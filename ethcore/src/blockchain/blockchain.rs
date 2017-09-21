@@ -1469,9 +1469,8 @@ mod tests {
 	use std::sync::Arc;
 	use rustc_hex::FromHex;
 	use util::kvdb::KeyValueDB;
-	use util::hash::*;
-	use util::sha3::Hashable;
-	use receipt::Receipt;
+	use bigint::hash::*;
+	use receipt::{Receipt, TransactionOutcome};
 	use blockchain::{BlockProvider, BlockChain, Config, ImportRoute};
 	use tests::helpers::*;
 	use blockchain::generator::{ChainGenerator, ChainIterator, BlockFinalizer};
@@ -2038,8 +2037,7 @@ mod tests {
 		let db = new_db();
 		let bc = new_chain(&genesis, db.clone());
 		insert_block(&db, &bc, &b1, vec![Receipt {
-			state_root: Some(H256::default()),
-			status_code: None,
+			outcome: TransactionOutcome::StateRoot(H256::default()),
 			gas_used: 10_000.into(),
 			log_bloom: Default::default(),
 			logs: vec![
@@ -2048,8 +2046,7 @@ mod tests {
 			],
 		},
 		Receipt {
-			state_root: Some(H256::default()),
-			status_code: None,
+			outcome: TransactionOutcome::StateRoot(H256::default()),
 			gas_used: 10_000.into(),
 			log_bloom: Default::default(),
 			logs: vec![
@@ -2058,8 +2055,7 @@ mod tests {
 		}]);
 		insert_block(&db, &bc, &b2, vec![
 			Receipt {
-				state_root: Some(H256::default()),
-				status_code: None,
+				outcome: TransactionOutcome::StateRoot(H256::default()),
 				gas_used: 10_000.into(),
 				log_bloom: Default::default(),
 				logs: vec![
